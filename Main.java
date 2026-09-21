@@ -1,28 +1,55 @@
-import tarefa.Tarefa;
+import tarefa.Download;
 
 public class Main {
+
     public static void main(String[] args) {
-        Tarefa tarefa = new Tarefa("Thread A");
-        Thread thread = new Thread(tarefa);
 
-        // 1. O usuário dispara a tarefa:
-        thread.start();
+        Download download1 =
+            new Download("Arquivo_Pequeno", 2);
 
-        // 2. Cenário de Teste controlado pela Thread Principal (Main)
+        Download download2 =
+            new Download("Arquivo_Medio", 4);
+
+        Download download3 =
+            new Download("Arquivo_Grande", 8);
+
+        Thread thread1 = new Thread(download1);
+        Thread thread2 = new Thread(download2);
+        Thread thread3 = new Thread(download3);
+
+        // Inicia os três downloads
+        thread1.start();
+        thread2.start();
+        thread3.start();
+
         try {
-            // CENÁRIO A: altere para 2000 ms para ver o cancelamento no passo 2 ou 3.
-            // CENÁRIO B: Altere para 7000 ms para ver o backup terminar com sucesso.
-            long tempoToleranciaUsuario = 2000; 
-            
-            Thread.sleep(tempoToleranciaUsuario); 
+            // A main aguarda 5 segundos
+            Thread.sleep(5000);
+
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
 
-        // 3. O tempo de tolerância acabou. Se a thread ainda estiver viva, enviamos o sinal
-        if (thread.isAlive()) {
-            System.out.println("\n[Main] Erro: O tempo limite estourou! Cancelando a tarefa...");
-            thread.interrupt(); // Ativa a flag booleana dentro da thread;
+        // Verifica individualmente cada download
+        if (thread1.isAlive()) {
+            System.out.println(
+                "[Main] Cancelando Arquivo_Pequeno..."
+            );
+            thread1.interrupt();
+        }
+
+        if (thread2.isAlive()) {
+            System.out.println(
+                "[Main] Cancelando Arquivo_Medio..."
+            );
+            thread2.interrupt();
+        }
+
+        if (thread3.isAlive()) {
+            System.out.println(
+                "[Main] Cancelando Arquivo_Grande..."
+            );
+            thread3.interrupt();
         }
     }
 }
