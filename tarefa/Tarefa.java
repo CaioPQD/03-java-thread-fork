@@ -41,4 +41,4 @@ public class Tarefa implements Runnable {
         // Se o loop principal terminou todas as 5 etapas sem interrupções:
         System.out.println(nome + ":\n-> SUCESSO: a tarefa foi concluída com sucesso!");
     }
-}
+} //alteração//
